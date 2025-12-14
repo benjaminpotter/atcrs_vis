@@ -70,70 +70,85 @@ def main(path, colors=None, label=None):
     us = np.array([v[2] for v in vertices.values()])
     bs = np.array([v[3] for v in vertices.values()])
 
-    # target = np.array([0.0, 0.0, 0.0])
-    # r = 1.5  # keep points within this radius
-    # pts = np.column_stack([es, ns, us])
-    # dist = np.linalg.norm(pts - target, axis=1)
-    # mask = dist <= r
+    # 3d plot
 
-    mask = (3.5 <= bs) & (bs <= 3.6)
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111, projection="3d")
+    #
+    # # target = np.array([0.0, 0.0, 0.0])
+    # # r = 1.5  # keep points within this radius
+    # # pts = np.column_stack([es, ns, us])
+    # # dist = np.linalg.norm(pts - target, axis=1)
+    # # mask = dist <= r
+    #
+    # mask = (3.5 <= bs) & (bs <= 3.6)
+    #
+    # es_f = es[mask]
+    # ns_f = ns[mask]
+    # us_f = us[mask]
+    #
+    # # start = 0
+    # # end = start + 10
+    # # es = es[start:end]
+    # # ns = ns[start:end]
+    # # us = us[start:end]
+    #
+    # # ax.set_xlim(-75, 75)
+    # # ax.set_ylim(-75, 75)
+    #
+    # # ax.set_xlabel("East [km]", labelpad=1)
+    # # ax.set_ylabel("North [km]", labelpad=1)
+    #
+    # ax.scatter([0], [0], [0], marker="o", c="red", s=10, depthshade=False)
+    # ax.scatter(es_f, ns_f, us_f, marker="o", s=3, depthshade=False)
+    # ax.scatter(es_f, ns_f, [0], marker=".", depthshade=False)
+    #
+    # ax.set_xlabel("East [km]", labelpad=1)
+    # ax.set_ylabel("North [km]", labelpad=1)
+    # ax.set_zlabel("Up [km]", labelpad=1)
+    #
+    # for e, n, u in zip(es_f, ns_f, us_f):
+    #     ax.plot([e, e], [n, n], [0, u], c="gray", alpha=0.3)
+    #
+    # # for edge in edges:
+    # #     id1, id2 = edge
+    # #     if start < id1 and id1 < end and start < id2 and id2 < end:
+    # #         e0, n0, u0, _, _, _ = vertices[id1]
+    # #         e1, n1, u1, _, _, _ = vertices[id2]
+    # #         axes[0].plot([e0, e1], [n0, n1], [u0, u1], color="black")
+    #
+    # fig.legend()
+    # # plt.tight_layout(pad=0.2)
+    # # fig.subplots_adjust(left=0.0, right=1.0, bottom=0.0, top=1.0)
+    # # plt.savefig("rrt_tree.pdf", dpi=300, bbox_inches="tight")
+    # # plt.show()
 
-    es_f = es[mask]
-    ns_f = ns[mask]
-    us_f = us[mask]
-
-    # start = 0
-    # end = start + 10
-    # es = es[start:end]
-    # ns = ns[start:end]
-    # us = us[start:end]
+    # 2d plot
 
     fig = plt.figure()
-    axes = [
-        # fig.add_subplot(111),
-        fig.add_subplot(111, projection="3d"),
-        # fig.add_subplot(131),
-        # fig.add_subplot(132),
-        # fig.add_subplot(133),
-    ]
+    ax = fig.add_subplot(111)
 
     # ax.set_xlim(-75, 75)
     # ax.set_ylim(-75, 75)
 
-    # ax.set_xlabel("East [km]", labelpad=1)
-    # ax.set_ylabel("North [km]", labelpad=1)
+    es_f = es[:]
+    ns_f = ns[:]
+    us_f = us[:]
 
-    # XY projection
-    axes[0].scatter([0], [0], [0], marker="o", c="red", s=10, depthshade=False)
-    axes[0].scatter(es_f, ns_f, us_f, marker="o", s=3, depthshade=False)
-    axes[0].scatter(es_f, ns_f, [0], marker=".", depthshade=False)
+    ax.scatter(es[0], ns[0], marker="o", c="orange", s=15)
+    ax.scatter([0], [0], marker="o", c="red", s=15)
+    cmap = ax.scatter(es_f, ns_f, c=us_f, marker="o", s=5, alpha=0.9)
 
-    axes[0].set_xlabel("East [km]", labelpad=1)
-    axes[0].set_ylabel("North [km]", labelpad=1)
-    axes[0].set_zlabel("Up [km]", labelpad=1)
+    for edge in edges:
+        id1, id2 = edge
+        e0, n0, u0, _, _, _ = vertices[id1]
+        e1, n1, u1, _, _, _ = vertices[id2]
+        ax.plot([e0, e1], [n0, n1], color="gray", alpha=0.3)
 
-    for e, n, u in zip(es_f, ns_f, us_f):
-        axes[0].plot([e, e], [n, n], [0, u], c="gray", alpha=0.3)
+    ax.set_xlabel("East [km]", labelpad=1)
+    ax.set_ylabel("North [km]", labelpad=1)
 
-    # for edge in edges:
-    #     id1, id2 = edge
-    #     if start < id1 and id1 < end and start < id2 and id2 < end:
-    #         e0, n0, u0, _, _, _ = vertices[id1]
-    #         e1, n1, u1, _, _, _ = vertices[id2]
-    #         axes[0].plot([e0, e1], [n0, n1], [u0, u1], color="black")
-
-    # # XZ projection
-    # axes[1].scatter(e, u, c=n, cmap="plasma", marker=".")
-    # axes[1].set_xlabel("X")
-    # axes[1].set_ylabel("Z")
-    # axes[1].set_title("XZ Projection")
-    #
-    # # YZ projection
-    # axes[2].scatter(n, u, c=e, cmap="inferno", marker=".")
-    # axes[2].set_xlabel("Y")
-    # axes[2].set_ylabel("Z")
-    # axes[2].set_title("YZ Projection")
-
+    fig.colorbar(cmap, ax=ax)
     fig.legend()
     # plt.tight_layout(pad=0.2)
     # fig.subplots_adjust(left=0.0, right=1.0, bottom=0.0, top=1.0)
@@ -142,5 +157,5 @@ def main(path, colors=None, label=None):
 
 
 if __name__ == "__main__":
-    file = "../atcrs/rrt_tree.g"
-    main(file, label="PL-RRT$^*$")
+    file = "../atcrs/mc_rrt_tree.g"
+    main(file, label="MC-RRT$^*$")

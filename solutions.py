@@ -163,11 +163,11 @@ def main(file_list, output, colors=None, labels=None):
 
 if __name__ == "__main__":
     # Example usage: list of trajectory files
-    files = ["paths/ara_plan.g", "paths/pl_rrt_plan.g", "paths/human_plan.g"]
-    main(files, "pl_search_trees.pdf", labels=["PL-ARA$^*$", "PL-RRT$^*$", "Human"])
+    # files = ["paths/ara_plan.g", "paths/pl_rrt_plan.g", "paths/human_plan.g"]
+    # main(files, "pl_search_trees.pdf", labels=["PL-ARA$^*$", "PL-RRT$^*$", "Human"])
 
-    # files = ["paths/mc_ara_plan.g", "paths/mc_rrt_plan.g", "paths/human_plan.g"]
-    # main(files, labels=["MC-ARA$^*$", "MC-RRT$^*$", "Human"])
+    files = ["paths/mc_ara_plan.g", "paths/mc_rrt_plan.g", "paths/human_plan.g"]
+    main(files, "mc_search_trees.pdf", labels=["MC-ARA$^*$", "MC-RRT$^*$", "Human"])
 
     # files = ["paths/mc_ara_plan.g", "paths/human_plan.g"]
     # main(files, labels=["MC-ARA$^*$", "Human"])
